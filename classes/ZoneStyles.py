@@ -1,0 +1,6 @@
+# set styles for zones
+NAVBAR_STYLE = {'background-color': 'transparent', 'height': '100%', 'maxHeight': '100%', 'minHeight': '100%', 'width': 'calc(100vw - 85vw)', 'maxWidth': '250px', 'minWidth': '250px', 'position': 'fixed', 'top': '0', 'left': '0', 'padding': '20px'}
+FILTERBAR_STYLE = {'display': 'flex', 'background-color': 'red', 'top': '0', 'right': '0', 'left': '0', 'width': '100vw', 'maxWidth': '100vw', 'minWidth': '100vw', 'position': 'fixed', 'margin-top': '60px'}
+GRAPH_STYLE = {'display': 'flex', 'background-color': 'transparent', 'bottom': '0', 'right': '0', 'height': 'calc(100vh - 40px)', 'maxHeight': 'calc(100vh - 40px)', 'minHeight': 'calc(100vh - 40px)', 'width': 'calc(100vw - 250px)', 'maxWidth': 'calc(100vw - 250px)', 'minWidth': 'calc(100vw - 250px)', 'position': 'fixed'}
+BASIC_OFFCANVAS_STYLE = {'background-color': 'red', 'height': '', 'maxHeight': '100px', 'minHeight': '100px', 'color': 'white'}
+ADVANCED_OFFCANVAS_STYLE = {'background-color': 'red', 'height': '', 'maxHeight': '300px', 'minHeight': '300px', 'color': 'white'}
