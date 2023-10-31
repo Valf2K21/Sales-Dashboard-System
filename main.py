@@ -1,4 +1,5 @@
 # import dependencies
+import logging
 import dash_bootstrap_components as dbc
 from dash import Dash, html, callback_context
 from dash.dependencies import Input, Output, State
@@ -20,6 +21,10 @@ from functions.render_multi_filterbar import render_multi_filterbar
 
 # create a function containing the Dash web application instance
 def main() -> None:
+    # configure logging to only show error level messages
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+
     # create a Dash web application instance
     app = Dash(external_stylesheets = [dbc.themes.SIMPLEX], suppress_callback_exceptions = True)
 
