@@ -1,26 +1,27 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # set mapping dictionaries and order lists prior to column generation
 # mapping dictionary of modelnames for modelseries column generation
 MODELNAME_MAPPER = {
-    'CYH': ['CYH52SRA', 'CYH52W W/OUT PTO'],
-    'CYZ': ['CYZ52QVC45 W/ TRANSMISSION SIDE PTO', 'CYZ52T TSPTO'],
-    'D-MAX': ['D-MAX 3.0 4X2 LS-A AT (RG01)', 'D-MAX 3.0 4X2 LS-A AT (RG10)', 'D-MAX 3.0 4X2 LS-A MT (RG10)', 'D-MAX 3.0 4X4 LS MT (RG01)', 'D-MAX 3.0 4X4 LS-A MT (RG10)', 'D-MAX 3.0 4X4 LS-A MT (RT66)', 'D-MAX 3.0 4X4 LS-E AT (RG01)', 'D-MAX 3.0 4X4 LS-E AT (RG10)', 'D-MAX 3.0 4X4 LT MT (RG01)', 'D-MAX 3.0 4X4 LT MT (RG10)', 'D-MAX 3.0 4X4 SINGLE-CAB MT (RG10)', 'D-MAX RZ4E 4X2 LS AT (RG01)', 'D-MAX RZ4E 4X2 LS MT (RG01)', 'D-MAX RZ4E 4X2 LS MT (RG10)', 'D-MAX RZ4E 4X2 LT MT (RG10)', 'D-MAX RZ4E 4X2 SINGLE-CAB MT (RG10)'],
-    'EXR': ['EXR52FVC45 W/ PTO', ],
-    'EXZ': ['EXZ52K TSPTO (KING PIN 3.5 INCHES)', 'EXZ52KVC45 W/ PTO'],
-    'FRR': ['FRR90M'],
-    'FTR': ['FTR90M', ],
-    'FTS': ['FTS34J C/C W/ PTO & AIRCON'],
-    'FVM': ['FVM34T', 'FVM34W'],
-    'FVR': ['FVR34'],
-    'FVZ': ['FVZ34T W/ PTO & AIRCON'],
-    'MU-X': ['MU-X 3.0 4X2 LS-A AT (RJ01)', 'MU-X 3.0 4X2 LS-A AT (RJ05)', 'MU-X 3.0 4X2 LS-E AT (RJ01)', 'MU-X 3.0 4X2 LS-E AT (RJ05)', 'MU-X 3.0 4X4 LS-E AT (RJ01)', 'MU-X 3.0 4X4 LS-E AT (RJ05)', 'MU-X RZ4E 4X2 LS AT (RJ01)', 'MU-X RZ4E 4X2 LS AT (RJ05)', 'MU-X RZ4E 4X2 LS-A MT (RJ01)'],
-    'NLR': ['NLR77 H LWB TILT', 'NLR77 H TILT', 'NLR85 E', 'NLR85ES'],
-    'NMR': ['NMR85 H', 'NMR85 H TILT'],
-    'NPR': ['NPR85', 'NPR85 K', 'NPR85H CREW-CAB W/ABS', 'NPR85H CREW-CAB W/ABS & PTO'],
-    'NPS': ['NPS75', 'NPS75H CREW-CAB'],
-    'NQR': ['NQR75', 'NQR75 L'],
-    'QKR': ['QKR77 NON-TILT 80A', 'QKR77 NON-TILT JB', 'QKR77 TILT 60A'],
-    'QLR': ['QLR77 E TILT'],
-    'TRAVIZ': ['TRAVIZ L', 'TRAVIZ S']
+    'SEDAN': ['FWD SEDAN', 'RWD SEDAN', 'AWD SEDAN'],
+    'SUV': ['FWD SUV', 'RWD SUV', 'AWD SUV'],
+    'TRUCK': ['FWD TRUCK', 'RWD TRUCK', 'AWD TRUCK']
 }
 
 # mapping dictionary of months for month column generation

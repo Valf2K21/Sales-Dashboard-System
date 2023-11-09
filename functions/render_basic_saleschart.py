@@ -1,3 +1,21 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import pandas as pd
 import plotly.express as px
@@ -38,16 +56,8 @@ def render_basic_saleschart(app: Dash, df_sales: pd.DataFrame, data_col: str, ch
         # set hue parameter to use as data_col
         hue = data_col
 
-    # set col and title as global to make it accessible outside function
-    global col
-    global title
-
-    # save passed data_col and chart_title to their respective variables
-    col = data_col
-    title = chart_title
-    
     # use px.bar() function to create a Plotly bar chart and store it in a variable
-    fig = px.bar(df_sales, x = xaxis, y = yaxis, color = hue, text = ColSchema.SALES, title = chart_title, orientation = direction)
+    fig = px.bar(df_sales, x = xaxis, y = yaxis, color = hue, text = ColSchema.SALES, title = chart_title, orientation = direction, color_continuous_scale = ['#636EFA', '#00CC96', '#EF553B'])
 
     # use .update_traces() function to modify the bar chart's textposition parameter
     fig.update_traces(textposition = 'outside')
@@ -58,6 +68,9 @@ def render_basic_saleschart(app: Dash, df_sales: pd.DataFrame, data_col: str, ch
 
     # use .update_layout() function to modify some of the bar chart's layout content
     fig.update_layout(
+        # set coloraxis_showscale to False to hide it
+        coloraxis_showscale = False,
+
         # open this layout's legend dictionary
         legend = dict(
             # modify the legend's title to add new instructions on how to use it

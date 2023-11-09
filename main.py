@@ -1,3 +1,21 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import logging
 import dash_bootstrap_components as dbc
@@ -83,8 +101,16 @@ def main() -> None:
             # save the button id that triggered the navbar callback in a variable
             button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-            # set unfiltered as global to make it accessible outside function
+            # set unfiltered, basic_unique, advanced_unique, advanced_time basic_col, basic_title, advanced_col1, advanced_col2, advanced_title as global to make it accessible outside function
             global unfiltered
+            global basic_unique
+            global advanced_unique
+            global advanced_time
+            global basic_col
+            global basic_title
+            global advanced_col1
+            global advanced_col2
+            global advanced_title
 
             # call query_data() function to get the sales dataframes needed
             model_name_sales, model_series_sales, sales_man_sales, month_sales, quarter_sales, model_name_month_sales, model_series_month_sales, sales_man_month_sales, model_name_quarter_sales, model_series_quarter_sales, sales_man_quarter_sales = query_data(year_start, year_end)
@@ -92,113 +118,147 @@ def main() -> None:
             # if-elif-else statements to determine the filterbar and sales chart to display, and unfiltered to globalize
             if button_id == NSchema.SALES_MODELNAME_LINK:
                 # call render_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_filterbar(app, model_name_sales, ColSchema.MODELNAME, 'FILTER BY MODEL NAME')
+                filter_element, basic_unique = render_filterbar(app, model_name_sales, ColSchema.MODELNAME, 'FILTER BY MODEL NAME')
 
                 # call render_basic_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_basic_saleschart(app, model_name_sales, ColSchema.MODELNAME, TSchema.MODELNAMETITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, column, and title to their respective global variables
                 unfiltered = model_name_sales
+                basic_col = ColSchema.MODELNAME
+                basic_title = TSchema.MODELNAMETITLE
 
             elif button_id == NSchema.SALES_MODELSERIES_LINK:
                 # call render_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_filterbar(app, model_series_sales, ColSchema.MODELSERIES, 'FILTER BY MODEL SERIES')
+                filter_element, basic_unique = render_filterbar(app, model_series_sales, ColSchema.MODELSERIES, 'FILTER BY MODEL SERIES')
 
                 # call render_basic_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_basic_saleschart(app, model_series_sales, ColSchema.MODELSERIES, TSchema.MODELSERIESTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, column, and title to their respective global variables
                 unfiltered = model_series_sales
+                basic_col = ColSchema.MODELSERIES
+                basic_title = TSchema.MODELSERIESTITLE
 
             elif button_id == NSchema.SALES_SALESMAN_LINK:
                 # call render_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_filterbar(app, sales_man_sales, ColSchema.SALESMAN, 'FILTER BY SALESMAN')
+                filter_element, basic_unique = render_filterbar(app, sales_man_sales, ColSchema.SALESMAN, 'FILTER BY SALESMAN')
 
                 # call render_basic_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_basic_saleschart(app, sales_man_sales, ColSchema.SALESMAN, TSchema.SALESMANTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, column, and title to their respective global variables
                 unfiltered = sales_man_sales
+                basic_col = ColSchema.SALESMAN
+                basic_title = TSchema.SALESMANTITLE
 
             elif button_id == NSchema.SALES_MONTH_LINK:
                 # call render_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_filterbar(app, month_sales, ColSchema.MONTH, 'FILTER BY MONTH')
+                filter_element, basic_unique = render_filterbar(app, month_sales, ColSchema.MONTH, 'FILTER BY MONTH')
 
                 # call render_basic_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_basic_saleschart(app, month_sales, ColSchema.MONTH, TSchema.MONTHTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, column, and title to their respective global variables
                 unfiltered = month_sales
+                basic_col = ColSchema.MONTH
+                basic_title = TSchema.MONTHTITLE
 
             elif button_id == NSchema.SALES_QUARTER_LINK:
                 # call render_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_filterbar(app, quarter_sales, ColSchema.QUARTER, 'FILTER BY QUARTER')
+                filter_element, basic_unique = render_filterbar(app, quarter_sales, ColSchema.QUARTER, 'FILTER BY QUARTER')
 
                 # call render_basic_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_basic_saleschart(app, quarter_sales, ColSchema.QUARTER, TSchema.QUARTERTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, column, and title to their respective global variables
                 unfiltered = quarter_sales
+                basic_col = ColSchema.QUARTER
+                basic_title = TSchema.QUARTERTITLE
 
             elif button_id == NSchema.MONTHLY_MODELNAME_LINK:
                 # call render_multi_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_multi_filterbar(app, model_name_sales, ColSchema.MODELNAME, MOrder.MONTH_ORDER, 'MODEL NAME', 'MONTH')
+                filter_element, advanced_unique = render_multi_filterbar(app, model_name_sales, ColSchema.MODELNAME, MOrder.MONTH_ORDER, 'MODEL NAME', 'MONTH')
 
                 # call render_advanced_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_advanced_saleschart(app, model_name_month_sales, ColSchema.MODELNAME, ColSchema.MONTH, TSchema.MODELNAMEBYMONTHTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, time, category column, time column, and title to their respective global variables
                 unfiltered = model_name_month_sales
+                advanced_time = MOrder.MONTH_ORDER
+                advanced_col1 = ColSchema.MODELNAME
+                advanced_col2 = ColSchema.MONTH
+                advanced_title = TSchema.MODELNAMEBYMONTHTITLE
 
             elif button_id == NSchema.MONTHLY_MODELSERIES_LINK:
                 # call render_multi_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_multi_filterbar(app, model_series_sales, ColSchema.MODELSERIES, MOrder.MONTH_ORDER, 'MODEL SERIES', 'MONTH')
+                filter_element, advanced_unique = render_multi_filterbar(app, model_series_sales, ColSchema.MODELSERIES, MOrder.MONTH_ORDER, 'MODEL SERIES', 'MONTH')
 
                 # call render_advanced_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_advanced_saleschart(app, model_series_month_sales, ColSchema.MODELSERIES, ColSchema.MONTH, TSchema.MODELSERIESBYMONTHTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, time, category column, time column, and title to their respective global variables
                 unfiltered = model_series_month_sales
+                advanced_time = MOrder.MONTH_ORDER
+                advanced_col1 = ColSchema.MODELSERIES
+                advanced_col2 = ColSchema.MONTH
+                advanced_title = TSchema.MODELSERIESBYMONTHTITLE
 
             elif button_id == NSchema.MONTHLY_SALESMAN_LINK:
                 # call render_multi_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_multi_filterbar(app, sales_man_sales, ColSchema.SALESMAN, MOrder.MONTH_ORDER, 'SALESMAN', 'MONTH')
+                filter_element, advanced_unique = render_multi_filterbar(app, sales_man_sales, ColSchema.SALESMAN, MOrder.MONTH_ORDER, 'SALESMAN', 'MONTH')
 
                 # call render_advanced_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_advanced_saleschart(app, sales_man_month_sales, ColSchema.SALESMAN, ColSchema.MONTH, TSchema.SALESMANBYMONTHTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, time, category column, time column, and title to their respective global variables
                 unfiltered = sales_man_month_sales
+                advanced_time = MOrder.MONTH_ORDER
+                advanced_col1 = ColSchema.SALESMAN
+                advanced_col2 = ColSchema.MONTH
+                advanced_title = TSchema.SALESMANBYMONTHTITLE
 
             elif button_id == NSchema.QUARTERLY_MODELNAME_LINK:
                 # call render_multi_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_multi_filterbar(app, model_name_sales, ColSchema.MODELNAME, MOrder.QUARTER_ORDER, 'MODEL NAME', 'QUARTER')
+                filter_element, advanced_unique = render_multi_filterbar(app, model_name_sales, ColSchema.MODELNAME, MOrder.QUARTER_ORDER, 'MODEL NAME', 'QUARTER')
 
                 # call render_advanced_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_advanced_saleschart(app, model_name_quarter_sales, ColSchema.MODELNAME, ColSchema.QUARTER, TSchema.MODELNAMEBYQUARTERTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, time, category column, time column, and title to their respective global variables
                 unfiltered = model_name_quarter_sales
+                advanced_time = MOrder.QUARTER_ORDER
+                advanced_col1 = ColSchema.MODELNAME
+                advanced_col2 = ColSchema.QUARTER
+                advanced_title = TSchema.MODELNAMEBYQUARTERTITLE
 
             elif button_id == NSchema.QUARTERLY_MODELSERIES_LINK:
                 # call render_multi_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_multi_filterbar(app, model_series_sales, ColSchema.MODELSERIES, MOrder.QUARTER_ORDER, 'MODEL SERIES', 'QUARTER')
+                filter_element, advanced_unique = render_multi_filterbar(app, model_series_sales, ColSchema.MODELSERIES, MOrder.QUARTER_ORDER, 'MODEL SERIES', 'QUARTER')
 
                 # call render_advanced_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_advanced_saleschart(app, model_series_quarter_sales, ColSchema.MODELSERIES, ColSchema.QUARTER, TSchema.MODELSERIESBYQUARTERTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, time, category column, time column, and title to their respective global variables
                 unfiltered = model_series_quarter_sales
+                advanced_time = MOrder.QUARTER_ORDER
+                advanced_col1 = ColSchema.MODELSERIES
+                advanced_col2 = ColSchema.QUARTER
+                advanced_title = TSchema.MODELSERIESBYQUARTERTITLE
 
             elif button_id == NSchema.QUARTERLY_SALESMAN_LINK:
                 # call render_multi_filterbar() function to set the web application's filterbar, and store it in a variable
-                filter_element = render_multi_filterbar(app, sales_man_sales, ColSchema.SALESMAN, MOrder.QUARTER_ORDER, 'SALESMAN', 'QUARTER')
+                filter_element, advanced_unique = render_multi_filterbar(app, sales_man_sales, ColSchema.SALESMAN, MOrder.QUARTER_ORDER, 'SALESMAN', 'QUARTER')
 
                 # call render_advanced_saleschart() function to set the web application's graph, and store it in a variable
                 graph_element = render_advanced_saleschart(app, sales_man_quarter_sales, ColSchema.SALESMAN, ColSchema.QUARTER, TSchema.SALESMANBYQUARTERTITLE)
 
-                # store passed sales dataframe to unfiltered
+                # store passed sales dataframe, time, category column, time column, and title to their respective global variables
                 unfiltered = sales_man_quarter_sales
+                advanced_time = MOrder.QUARTER_ORDER
+                advanced_col1 = ColSchema.SALESMAN
+                advanced_col2 = ColSchema.QUARTER
+                advanced_title = TSchema.SALESMANBYQUARTERTITLE
 
             else:
                 # keep the two variables in its default state
@@ -228,20 +288,20 @@ def main() -> None:
     def select_all_categories_one(_: int) -> list[str]:
         # if-elif statement to determine the unique_cats global variable to use depending on button_id
         if button_id in [NSchema.SALES_MODELNAME_LINK, NSchema.SALES_MODELSERIES_LINK, NSchema.SALES_SALESMAN_LINK, NSchema.SALES_MONTH_LINK, NSchema.SALES_QUARTER_LINK]:
-            # fetch most recent values of render_filterbar() function's unique_cats global variable and return it
-            return render_filterbar.unique_cats
+            # return current values of basic_unique global variable
+            return basic_unique
         
         elif button_id in [NSchema.MONTHLY_MODELNAME_LINK, NSchema.MONTHLY_MODELSERIES_LINK, NSchema.MONTHLY_SALESMAN_LINK, NSchema.QUARTERLY_MODELNAME_LINK, NSchema.QUARTERLY_MODELSERIES_LINK, NSchema.QUARTERLY_SALESMAN_LINK]:
-            # fetch most recent values of render_multi_filterbar() function's unique_cats global variable and return it
-            return render_multi_filterbar.unique_cats
+            # return current values of advanced_unique global variable
+            return advanced_unique
         
     # create a callback that calls select_all_categories_two() callback function below, and sets the second filterbar's select all button element's clicks as input, and the second filterbar element's values as output
     @app.callback(Output(ComSchema.DATACATEGORY_FILTER_TWO, 'value'), Input(ComSchema.SELECT_ALL_CATEGORIES_BUTTON_TWO, 'n_clicks'))
 
     # create user-defined callback function for filling up the second filterbar element with all unique values
     def select_all_categories_two(_: int) -> list[str]:
-        # fetch most recent values of render_multi_filterbar() function's time global variable and return it
-        return render_multi_filterbar.time
+        # return current values of advanced_time global variable
+        return advanced_time
     
     # create a callback that calls update_bar_chart_basic() callback function below, and sets the first filterbar element's values as input, and the basic bar chart as output
     @app.callback(Output(ComSchema.BASIC_BAR_GRAPH, 'children'), Input(ComSchema.DATACATEGORY_FILTER_ONE, 'value'))
@@ -249,7 +309,7 @@ def main() -> None:
     # create user-defined callback function for updating basic bar chart
     def update_bar_chart_basic(filtered_cats: list[str]) -> html.Div:
         # fetch dataframe of unfiltered global variable, and filter it with filtered_cats using .query() function
-        filtered_sales_df = unfiltered.query(f'{render_basic_saleschart.col} in @filtered_cats')
+        filtered_sales_df = unfiltered.query(f'{basic_col} in @filtered_cats')
 
         # if-statement to check if filtered_sales_df has no content
         if filtered_sales_df.shape[0] == 0:
@@ -257,7 +317,7 @@ def main() -> None:
             return html.Div('NO DATA SELECTED')
         
         # call render_basic_saleschart() function to update the basic bar chart and return it
-        return render_basic_saleschart(app, filtered_sales_df, render_basic_saleschart.col, render_basic_saleschart.title)
+        return render_basic_saleschart(app, filtered_sales_df, basic_col, basic_title)
     
     # create a callback that calls update_bar_chart_advanced() callback function below, and sets the first and second filterbar elements' values as input, and the advanced bar chart as output
     @app.callback(Output(ComSchema.ADVANCED_BAR_GRAPH, 'children'), [Input(ComSchema.DATACATEGORY_FILTER_ONE, 'value'), Input(ComSchema.DATACATEGORY_FILTER_TWO, 'value')])
@@ -265,7 +325,7 @@ def main() -> None:
     # create user-defined callback function for updating advanced bar chart
     def update_bar_chart_advanced(filtered_cats: list[str], filtered_time: list[str]) -> html.Div:
         # fetch dataframe of unfiltered global variable, and filter it with filtered_cats and filtered_time using .query() function
-        filtered_sales_df = unfiltered.query(f'{render_advanced_saleschart.col} in @filtered_cats and {render_advanced_saleschart.col2} in @filtered_time')
+        filtered_sales_df = unfiltered.query(f'{advanced_col1} in @filtered_cats and {advanced_col2} in @filtered_time')
 
         # if-statement to check if filtered_sales_df has no content
         if filtered_sales_df.shape[0] == 0:
@@ -273,7 +333,7 @@ def main() -> None:
             return html.Div('NO DATA SELECTED')
         
         # call render_advanced_saleschart() function to update the advanced bar chart and return it
-        return render_advanced_saleschart(app, filtered_sales_df, render_advanced_saleschart.col, render_advanced_saleschart.col2, render_advanced_saleschart.title)
+        return render_advanced_saleschart(app, filtered_sales_df, advanced_col1, advanced_col2, advanced_title)
     
     # run Dash web application instance
     app.run()

@@ -1,3 +1,21 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import dash_bootstrap_components as dbc
 import pandas as pd
@@ -14,9 +32,6 @@ import classes.ZoneStyles as ZStyles
 def render_filterbar(app: Dash, df_sales: pd.DataFrame, data_col: str, ftr_title: str) -> html.Div:
     # use df[colname].tolist() function to retrieve that column's values and store it in a variable
     data_cats: list[str] = df_sales[data_col].tolist()
-
-    # set unique_cats as global to make it accessible outside function
-    global unique_cats
 
     # use set() function to convert data_cats into a set for deduplication, then sorted() function to sort it
     unique_cats = sorted(set(data_cats), key = str)
@@ -97,4 +112,4 @@ def render_filterbar(app: Dash, df_sales: pd.DataFrame, data_col: str, ftr_title
     )
 
     # return offcanvas
-    return offcanvas
+    return offcanvas, unique_cats

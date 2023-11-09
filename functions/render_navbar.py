@@ -1,3 +1,21 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import dash_bootstrap_components as dbc
 from dash import Dash, html, dcc
@@ -23,7 +41,7 @@ def render_navbar(app: Dash) -> html.Div:
                     html.H2('ISUZU', style = CStyles.BRAND_STYLE),
 
                     # element 2: horizontal line element
-                    html.Hr(),
+                    html.Hr(style = CStyles.LINE_STYLE),
 
                     # element 3: year selector title
                     html.H6('Year Selector', style = CStyles.NAVLINKTITLE_STYLE),
@@ -56,7 +74,7 @@ def render_navbar(app: Dash) -> html.Div:
                     ),
 
                     # element 7: horizontal line element
-                    html.Hr(),
+                    html.Hr(style = CStyles.LINE_STYLE),
 
                     # element 8: basic dashboards title
                     html.H6('Basic Sales Dashboards', style = CStyles.NAVLINKTITLE_STYLE),
@@ -69,7 +87,7 @@ def render_navbar(app: Dash) -> html.Div:
                     dbc.NavLink('Sales by Quarter', id = NSchema.SALES_QUARTER_LINK, href = '#', active = 'exact'),
 
                     # element 14: horizontal line element
-                    html.Hr(),
+                    html.Hr(style = CStyles.LINE_STYLE),
 
                     # element 15: advanced dashboards title
                     html.H6('Advanced Sales Dashboards', style = CStyles.NAVLINKTITLE_STYLE),

@@ -1,3 +1,21 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import pandas as pd
 import psycopg2
@@ -19,7 +37,7 @@ def query_data(start: str, end: str):
     c = conn.cursor()
 
     # use created cursor to query and fetch sales data
-    c.execute("SELECT p.model_name, p.sales_man, si.invoice_date FROM tb_purchase p INNER JOIN tb_sales_invoice si ON p.purchase_no = si.purchase_no WHERE si.invoice_stat = 1 AND si.invoice_date >= '{start}-01-01' AND si.invoice_date <= '{end}-12-31' ORDER BY si.invoice_date ASC;")
+    c.execute(f"SELECT p.model_name, p.sales_man, si.invoice_date FROM tb_purchase p INNER JOIN tb_sales_invoice si ON p.purchase_no = si.purchase_no WHERE si.invoice_stat = 1 AND si.invoice_date >= '{start}-01-01' AND si.invoice_date <= '{end}-12-31' ORDER BY si.invoice_date ASC;")
     sales_data = c.fetchall()
 
     # use pd.dataframe() function to store fetched sales data into a dataframe
@@ -54,8 +72,8 @@ def query_data(start: str, end: str):
     model_name_sales = sales_df['model_name'].value_counts().reset_index()
     model_series_sales = sales_df['model_series'].value_counts().reset_index()
     sales_man_sales = sales_df['sales_man'].value_counts().reset_index()
-    month_sales = sales_df.groupby('month')['model_name'].count().reset_index()
-    quarter_sales = sales_df.groupby('quarter')['model_name'].count().reset_index()
+    month_sales = sales_df.groupby('month', observed = False)['model_name'].count().reset_index()
+    quarter_sales = sales_df.groupby('quarter', observed = False)['model_name'].count().reset_index()
 
     # use pd.MultiIndex.from_product() function to count instances of unique columnA-columnB combinations
     model_name_month = pd.MultiIndex.from_product([sales_df['model_name'].unique(), sales_df['month'].unique()], names = ['model_name', 'month'])
@@ -74,12 +92,12 @@ def query_data(start: str, end: str):
     sales_man_quarter_sales = pd.DataFrame(index = sales_man_quarter).reset_index()
 
     # use pd.merge() function to merge sales_df and each of the six advanced dataframes to fill it up with values
-    model_name_month_sales = pd.merge(model_name_month_sales, sales_df.groupby(['model_name', 'month']).size().reset_index(name = 'count'), how = 'left')
-    model_series_month_sales = pd.merge(model_series_month_sales, sales_df.groupby(['model_series', 'month']).size().reset_index(name = 'count'), how = 'left')
-    sales_man_month_sales = pd.merge(sales_man_month_sales, sales_df.groupby(['sales_man', 'month']).size().reset_index(name = 'count'), how = 'left')
-    model_name_quarter_sales = pd.merge(model_name_quarter_sales, sales_df.groupby(['model_name', 'quarter']).size().reset_index(name = 'count'), how = 'left')
-    model_series_quarter_sales = pd.merge(model_series_quarter_sales, sales_df.groupby(['model_series', 'quarter']).size().reset_index(name = 'count'), how = 'left')
-    sales_man_quarter_sales = pd.merge(sales_man_quarter_sales, sales_df.groupby(['sales_man', 'quarter']).size().reset_index(name = 'count'), how = 'left')
+    model_name_month_sales = pd.merge(model_name_month_sales, sales_df.groupby(['model_name', 'month'], observed = False).size().reset_index(name = 'count'), how = 'left')
+    model_series_month_sales = pd.merge(model_series_month_sales, sales_df.groupby(['model_series', 'month'], observed = False).size().reset_index(name = 'count'), how = 'left')
+    sales_man_month_sales = pd.merge(sales_man_month_sales, sales_df.groupby(['sales_man', 'month'], observed = False).size().reset_index(name = 'count'), how = 'left')
+    model_name_quarter_sales = pd.merge(model_name_quarter_sales, sales_df.groupby(['model_name', 'quarter'], observed = False).size().reset_index(name = 'count'), how = 'left')
+    model_series_quarter_sales = pd.merge(model_series_quarter_sales, sales_df.groupby(['model_series', 'quarter'], observed = False).size().reset_index(name = 'count'), how = 'left')
+    sales_man_quarter_sales = pd.merge(sales_man_quarter_sales, sales_df.groupby(['sales_man', 'quarter'], observed = False).size().reset_index(name = 'count'), how = 'left')
 
     # use .columns function to give the five basic and six advanced dataframes standard column names
     model_name_sales.columns = ['model_name', 'sales']

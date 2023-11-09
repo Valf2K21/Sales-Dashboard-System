@@ -1,3 +1,21 @@
+'''
+    The Sales Dashboard System is a web application for analyzing vehicle sales performance according to five categories: model name, model series, salesman, month, and quarter.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import pandas as pd
 import plotly.express as px
@@ -11,16 +29,6 @@ import classes.ZoneStyles as ZStyles
 
 # create a function to construct the advanced sales chart
 def render_advanced_saleschart(app: Dash, df_sales: pd.DataFrame, cat_col: str, time_col: str, chart_title: str) -> html.Div():
-    # set col, col2, and title as global to make it accessible outside function
-    global col
-    global col2
-    global title
-
-    # save passed cat_col, time_col, and chart_title in their respective variables
-    col = cat_col
-    col2 = time_col
-    title = chart_title
-
     # use px.bar() function to create a Plotly bar chart and store it in a variable
     fig = px.bar(df_sales, x = time_col, y = ColSchema.SALES, color = cat_col, text = ColSchema.SALES, title = chart_title)
 
